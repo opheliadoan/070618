@@ -7,10 +7,10 @@
 import java.util.*;
 public class Game2 {
     public static void main(String[] args) {
-        //Create a 10* 10 board
+        /Create a 10* 10 board
         String[][] board = new String[10][10];
         for (int i = 0; i < board.length; i++) {
-            for (int j = 0; i < board[i].length; j++) {
+            for (int j = 0; j < board[i].length; j++) {
                 board[i][j] = "*";
             }
         }
@@ -30,7 +30,7 @@ public class Game2 {
         int enCol2 = 0;
         //third enemy
         int enRow3 = 0;
-        int enCol 3 = 0;
+        int enCol3 = 0;
         /**
          * The three enemies have to be in different locations
          * from each other
@@ -72,7 +72,7 @@ public class Game2 {
             }
             System.out.println(" ");
         }
-
+        
         //Print out instruction
         System.out.println("\tInstruction: ");
         System.out.println("Left: push A; \nRight: push D; \nDown: push S; \nUp: push W; \nExit Game: ESC");
@@ -102,7 +102,7 @@ public class Game2 {
 
             } else if (move .equals("S") && row < 9) {
                 row += 1;
-                enRow += 2;
+                enRow3 += 2;
 
             } else if (move .equals("W") && row > 0){
                 row -= 1;
@@ -114,11 +114,11 @@ public class Game2 {
 
             } else if (move .equals("A") && col == 0) {
                 col = 3;
-                 enCol3 -= 2;
+                enCol3 -= 2;
 
             } else if (move .equals("S") && row == 9) {
                 row = 0;
-                enRow += 2;
+                enRow3 += 2;
 
             } else if (move .equals("W") && row == 0){
                 row = 3;
@@ -152,7 +152,7 @@ public class Game2 {
                     }
                     System.out.println(" ");
                 }
-                System.out.println("GAME OVER.");
+               System.out.println("GAME OVER.");
                 return;
             }
 
@@ -173,19 +173,16 @@ public class Game2 {
             }
 
             //update the position of player
+            //in case the enemy moves to the previous position of the player
             board[row][col] = "P";
-            if (preRow == enRow1 && preCol == enCol1) { //in case the enemy moves to the previous position of the player
-                board[enRow1][enCol1] = "E";
-            } else if (preRow == enRow2 && preCol == enCol2) { //in case the enemy moves to the previous position of the player
-                board[enRow2][enCol2] = "E";
-            }
-            else {
+            if ((preRow == enRow1 && preCol == enCol1) || (preRow == enRow2 && preCol == enCol2) || (preRow == enRow3 && preCol == enCol3)) { 
+                board[preRow][preCol] = "E";
+            } else {
                 board[preRow][preCol] = "*";
             }
 
 
-
-            for (int i = 0; i < board.length; i ++) {
+            or (int i = 0; i < board.length; i ++) {
                 for (int j  = 0; j < board[0].length; j++) {
                     System.out.print(board[i][j] + " ");
                 }
