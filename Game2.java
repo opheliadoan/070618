@@ -1,19 +1,19 @@
 /**
  * NAME: Doan Phuong Anh
  * Date: 070618
- * Assignment 1: Part 1, 2, 3, 4
+ * Assignment 1: Part 5, 6, 7, 8
  */
 
 import java.util.*;
-public class Game {
+public class Game2 {
     public static void main(String[] args) {
-        //Create the board
-        String[][] board = {
-                {"*", "*", "*", "*"},
-                {"*", "*", "*", "*"},
-                {"*", "*", "*", "*"},
-                {"*", "*", "*", "*"},
-        };
+        //Create a 10* 10 board
+        String[][] board = new String[10][10];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; i < board[i].length; j++) {
+                board[i][j] = "*";
+            }
+        }
 
         //Locate player
         int row = 0;
@@ -28,18 +28,25 @@ public class Game {
         //second enemy
         int enRow2 = 0;
         int enCol2 = 0;
+        //third enemy
+        int enRow3 = 0;
+        int enCol 3 = 0;
         /**
-         * The two enemies have to be in different locations
+         * The three enemies have to be in different locations
          * from each other
          * and from the player
          */
-        while ((enRow1 == enRow2 && enCol1 == enCol2) || (enRow1 == row && enCol1 == col) || (enRow2 == row && enCol2 == col)) {
+        while ((enRow1 == enRow2 && enCol1 == enCol2) || (enRow1 == row && enCol1 == col) || (enRow2 == row && enCol2 == col) || 
+            (enRow3 == row && enCol3 == col) || (enRow3 == enRow1 && enCol3 == enCol1) || (enRow3 == enRow2 && enCol3 == enCol2)) {
             //first enemy
-            enRow1 = num.nextInt(3) + 1;
-            enCol1 = num.nextInt(3) + 1;
+            enRow1 = num.nextInt(9) + 1;
+            enCol1 = num.nextInt(9) + 1;
             //second enemy
-            enRow2 = num.nextInt(3) + 1;
-            enCol2 = num.nextInt(3) + 1;
+            enRow2 = num.nextInt(9) + 1;
+            enCol2 = num.nextInt(9) + 1;
+            //third enemy
+            enRow3 = num.nextInt(9) + 1;
+            enCol3 = num.nextInt(9) + 1;
         }
         board[enRow1][enCol1] = "E";
         board[enRow2][enCol2] = "E";
@@ -52,10 +59,10 @@ public class Game {
         int giftRow = 0;
         int giftCol = 0;
         while ((giftRow == enRow2 && giftCol== enCol2) || (giftRow == row && giftCol == col) || (giftRow == enRow1 && giftCol== enCol1)) {
-            giftRow = num.nextInt(3) + 1;
-            giftCol= num.nextInt(3) + 1;
-           }
-           board[giftRow][giftCol] = "G";
+            giftRow = num.nextInt(9) + 1;
+            giftCol= num.nextInt(9) + 1;
+        }
+        board[giftRow][giftCol] = "G";
 
 
         //Print out the board
@@ -81,58 +88,63 @@ public class Game {
             int preCol = col;
             int preEnCol1 = enCol1;
             int preEnRow2 = enRow2;
+            int preEnRow3 = enRow3;
+            int preEnCol3 = enCol3;
 
             //Move the enemy
-            // first enemy  moves form left to right
-            if (enCol1 == 3) {
-                enCol1 = 0;
-            } else {
-                enCol1 += 1;
-            }
-
-            //second enemy moves downwards
-            if (enRow2 == 3) {
-                enRow2 = 0;
-            } else {
-                enRow2 += 1;
-            }
-            //update the position of the enemy every time player moves
-            board[enRow1][preEnCol1] = "*";
-            board[preEnRow2][enCol2] = "*";
-            board[enRow1][enCol1] = "E";
-            board[enRow2][enCol2] = "E";
-
-
             if (move .equals("A") && col > 0) {
                 col -= 1;
+                enCol3 -= 2;
 
-            } else if (move .equals("D") && col < 3) {
+            } else if (move .equals("D") && col < 9) {
                 col += 1;
+                enCol3 += 2;
 
-            } else if (move .equals("S") && row < 3) {
+            } else if (move .equals("S") && row < 9) {
                 row += 1;
+                enRow += 2;
 
             } else if (move .equals("W") && row > 0){
                 row -= 1;
+                enRow3 -= 2;
 
-            } else if (move .equals("D") && col == 3) {
+            } else if (move .equals("D") && col == 9) {
                 col = 0;
+                enCol3 += 2;
 
             } else if (move .equals("A") && col == 0) {
                 col = 3;
+                 enCol3 -= 2;
 
-            } else if (move .equals("S") && row == 3) {
+            } else if (move .equals("S") && row == 9) {
                 row = 0;
+                enRow += 2;
 
             } else if (move .equals("W") && row == 0){
                 row = 3;
+                enRow3 -= 2;
 
             } else {
                 System.out.println("The move is not valid");
             }
 
+            //When the enemies hit the wall, they will bounce back one step (two steps for the third)
+            // first enemy moves form left to right
+            enCol1 += 1;
+
+            //second enemy moves downwards
+            enRow2 += 1;
+
+            //Update the postion of the enemies
+            board[enRow1][preEnCol1] = "*";
+            board[preEnRow2][enCol2] = "*";
+            board[preEnRow3][preEnCol3] = "*";
+            board[enRow1][enCol1] = "E";
+            board[enRow2][enCol2] = "E";
+            board[enRow3][enCol3] = "E";
+
             //Game ends when the player meets the enemy
-            if ((enRow1 == row && enCol1 == col) || (enRow2 == row && enCol2 == col)) {
+            if ((enRow1 == row && enCol1 == col) || (enRow2 == row && enCol2 == col) || (enRow3 == row && enCol3 == col)) {
                 board[row][col] = "E";
                 for (int i = 0; i < board.length; i ++) {
                     for (int j  = 0; j < board[0].length; j++) {
@@ -146,7 +158,7 @@ public class Game {
 
             /**
              * Game ends and the player wins when
-             *its position and gift's position are the same
+             * its position and gift's position are the same
              * When enemies meet gift, enemies will take the priority to present
              */
             if (row == giftRow && col == giftCol) {
@@ -154,7 +166,7 @@ public class Game {
                 return;
             }
 
-            if ((enRow1 == giftRow && enCol1 == giftCol) || (enRow2 == giftRow && enCol2 == giftCol)) {
+            if ((enRow1 == giftRow && enCol1 == giftCol) || (enRow2 == giftRow && enCol2 == giftCol) || (enRow3 == giftRow && enCol3 == giftCol)) {
                 board[giftRow][giftCol] = "E";
             } else {
                 board[giftRow][giftCol] = "G";
@@ -162,9 +174,12 @@ public class Game {
 
             //update the position of player
             board[row][col] = "P";
-            if ((preRow == enRow1 && preCol == enCol1) || (preRow == enRow2 && preCol == enCol2)){ //in case the enemy moves to the previous position of the player
-                board[preRow][preCol] = "E";
-            } else {
+            if (preRow == enRow1 && preCol == enCol1) { //in case the enemy moves to the previous position of the player
+                board[enRow1][enCol1] = "E";
+            } else if (preRow == enRow2 && preCol == enCol2) { //in case the enemy moves to the previous position of the player
+                board[enRow2][enCol2] = "E";
+            }
+            else {
                 board[preRow][preCol] = "*";
             }
 
