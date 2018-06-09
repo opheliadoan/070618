@@ -7,13 +7,16 @@
 import java.util.*;
 public class Game2 {
     public static void main(String[] args) {
-        /Create a 10* 10 board
+        //Create a 10* 10 board
         String[][] board = new String[10][10];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 board[i][j] = "*";
             }
         }
+
+        //Store the number of gifts the player has got
+        int count = 0;
 
         //Locate player
         int row = 0;
@@ -50,20 +53,37 @@ public class Game2 {
         }
         board[enRow1][enCol1] = "E";
         board[enRow2][enCol2] = "E";
+        board[enRow3][enCol3] = "E";
 
         /**
-         * Locate gift
-         * The initial position of the gift should be random,
+         * Locate three gifts
+         * The position of the gifts should be random,
          * different from locations of player and enemies
          */
-        int giftRow = 0;
-        int giftCol = 0;
-        while ((giftRow == enRow2 && giftCol== enCol2) || (giftRow == row && giftCol == col) || (giftRow == enRow1 && giftCol== enCol1)) {
-            giftRow = num.nextInt(9) + 1;
-            giftCol= num.nextInt(9) + 1;
-        }
-        board[giftRow][giftCol] = "G";
+        int giftRow1 = 0;
+        int giftCol1 = 0;
 
+        int giftRow2 = 0;
+        int giftCol2 = 0;
+
+        int giftRow3 = 0;
+        int giftCol3 = 0;
+        while ((giftRow1 == enRow2 && giftCol1 == enCol2) || (giftRow1 == row && giftCol1 == col) || (giftRow1 == enRow1 && giftCol1 == enCol1) 
+            || (giftRow2 == enRow2 && giftCol2 == enCol2) || (giftRow2 == row && giftCol2 == col) || (giftRow2 == enRow1 && giftCol2 == enCol1)
+            || (giftRow3 == enRow2 && giftCol3 == enCol2) || (giftRow3 == row && giftCol3 == col) || (giftRow3 == enRow1 && giftCol3 == enCol1)
+            || (giftRow1 == giftRow2 && giftCol1 == giftCol2) || (giftRow1 == giftRow3 && giftCol1 == giftCol3) || (giftRow3 == giftRow2 && giftCol3 == giftCol2)) {
+            giftRow1 = num.nextInt(9) + 1;
+            giftCol1 = num.nextInt(9) + 1;
+
+            giftRow2 = num.nextInt(9) + 1;
+            giftCol2 = num.nextInt(9) + 1;
+
+            giftRow3 = num.nextInt(9) + 1;
+            giftCol3 = num.nextInt(9) + 1;
+        }
+        board[giftRow1][giftCol1] = "G";
+        board[giftRow2][giftCol2] = "G";
+        board[giftRow3][giftCol3] = "G";
 
         //Print out the board
         for (int i = 0; i < board.length; i ++) {
@@ -125,7 +145,7 @@ public class Game2 {
                 enRow3 -= 2;
 
             } else {
-                System.out.println("The move is not valid");
+                System.out.println("The move is not valid.");
             }
 
             //When the enemies hit the wall, they will bounce back one step (two steps for the third)
@@ -158,18 +178,35 @@ public class Game2 {
 
             /**
              * Game ends and the player wins when
-             * its position and gift's position are the same
-             * When enemies meet gift, enemies will take the priority to present
+             * the player eats all the gift
+             * The position of the eaten gift turns blank
+             * When enemies meet gifts, enemies will take the priority to present
              */
-            if (row == giftRow && col == giftCol) {
-                System.out.println("YOU WIN");
-                return;
+            if ((row == giftRow1 && col == giftCol1) || (row == giftRow2 && col == giftCol2) || (row == giftRow3 && col == giftCol3)) {
+                board[row][col] = "*";
+                count++;
+                if (count == 3) {
+                    System.out.println("YOU WIN.");
+                    return;
+                }
             }
 
-            if ((enRow1 == giftRow && enCol1 == giftCol) || (enRow2 == giftRow && enCol2 == giftCol) || (enRow3 == giftRow && enCol3 == giftCol)) {
-                board[giftRow][giftCol] = "E";
+            if ((enRow1 == giftRow1 && enCol1 == giftCol1) || (enRow2 == giftRow1 && enCol2 == giftCol1) || (enRow3 == giftRow1 && enCol3 == giftCol1)) {
+                board[giftRow1][giftCol1] = "E";
             } else {
-                board[giftRow][giftCol] = "G";
+                board[giftRow1][giftCol1] = "G";
+            }
+
+            if ((enRow1 == giftRow2 && enCol1 == giftCol2) || (enRow2 == giftRow2 && enCol2 == giftCol2) || (enRow3 == giftRow2 && enCol3 == giftCol2)) {
+                board[giftRow2][giftCol2] = "E";
+            } else {
+                board[giftRow2][giftCol2] = "G";
+            }
+
+            if ((enRow1 == giftRow3 && enCol1 == giftCol3) || (enRow2 == giftRow3 && enCol2 == giftCol3) || (enRow3 == giftRow3 && enCol3 == giftCol3)) {
+                board[giftRow3][giftCol3] = "E";
+            } else {
+                board[giftRow3][giftCol3] = "G";
             }
 
             //update the position of player
@@ -182,7 +219,7 @@ public class Game2 {
             }
 
 
-            or (int i = 0; i < board.length; i ++) {
+            for (int i = 0; i < board.length; i ++) {
                 for (int j  = 0; j < board[0].length; j++) {
                     System.out.print(board[i][j] + " ");
                 }
